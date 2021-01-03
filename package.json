@@ -1,0 +1,24 @@
+{
+  "name": "lib-api-array-cli",
+  "version": "1.0.0",
+  "description": "- Let's practice node knowledge",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeffersondesouza/node-lib-api-array-cli.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jeffersondesouza/node-lib-api-array-cli/issues"
+  },
+  "homepage": "https://github.com/jeffersondesouza/node-lib-api-array-cli#readme",
+  "dependencies": {
+    "chalk": "^5.0.1"
+  }
+}
