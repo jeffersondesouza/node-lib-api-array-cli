@@ -30,5 +30,4 @@ async function processText() {
     });
   }
 }
-
 processText(input);
