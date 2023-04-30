@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node index",
-    "cli": "node ./cli.js"
+    "cli": "node ./cli.js ./files",
+    "cli:v": "node ./cli.js --validate ./files"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,8 @@
   },
   "homepage": "https://github.com/jeffersondesouza/node-lib-api-array-cli#readme",
   "dependencies": {
-    "chalk": "^5.0.1"
+    "chalk": "^5.0.1",
+    "fetch": "^1.1.0",
+    "node-fetch": "^3.3.1"
   }
 }

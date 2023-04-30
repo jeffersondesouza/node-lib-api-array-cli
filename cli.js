@@ -1,8 +1,9 @@
 import fs from "fs";
 import chalk from "chalk";
 import { readFileAsyncAwait } from "./index.js";
+import { checkStatus } from "./http.request-checker.js";
 
-const [filePath, _] = process.argv.reverse();
+const [input, input2, _] = process.argv.reverse();
 
 function printFileLinks(links, fileName = "") {
   console.log(chalk.yellow(`Links from file ${fileName}`), links);
@@ -10,7 +11,7 @@ function printFileLinks(links, fileName = "") {
 
 async function processText() {
   try {
-    fs.lstatSync(filePath);
+    fs.lstatSync(input);
   } catch (error) {
     if (error.code === "ENOENT") {
       console.log("File or directory does not exists");
@@ -18,17 +19,16 @@ async function processText() {
     }
   }
 
-  if (fs.lstatSync(filePath).isFile()) {
-    const result = await readFileAsyncAwait(filePath);
-    printFileLinks(result, filePath);
-  } else if (fs.lstatSync(filePath).isDirectory()) {
-    const files = await fs.promises.readdir(filePath);
-
+  if (fs.lstatSync(input).isFile()) {
+    const result = await readFileAsyncAwait(input, input2 === '--validate');
+    printFileLinks(result, input);
+  } else if (fs.lstatSync(input).isDirectory()) {
+    const files = await fs.promises.readdir(input);
     files.forEach(async function (file) {
-      const result = await readFileAsyncAwait(`${filePath}/${file}`);
-      printFileLinks(result, `${filePath}/${file}`);
+      const result = await readFileAsyncAwait(`${input}/${file}`, input2 === '--validate');
+      printFileLinks(result, `${input}/${file}`);
     });
   }
 }
 
-processText(filePath);
+processText(input);

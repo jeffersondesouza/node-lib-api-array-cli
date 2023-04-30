@@ -1,4 +1,5 @@
 import fs from "fs";
+import fetch from "node-fetch";
 import chalk from "chalk";
 
 const test =
@@ -39,7 +40,7 @@ function readFileSync(filePath) {
     links = handleFileText(txt);
     finishFileReading();
   });
-  console.log(3)
+  console.log(3);
 
   return links;
 }
@@ -52,10 +53,34 @@ function readFileAsync(filePath) {
     .finally(finishFileReading);
 }
 
-export async function readFileAsyncAwait(filePath) {
+export async function readFileAsyncAwait(filePath, shouldValidate) {
   try {
-    const txt = await fs.promises.readFile(filePath, "utf-8");
-    return handleFileText(txt);
+    const fileContent = await fs.promises.readFile(filePath, "utf-8");
+    const links = handleFileText(fileContent);
+
+    const linked = await Promise.all(
+      links.map(async function (link) {
+        try {
+          await fetch(link.url);
+          return {
+            ...link,
+            valid: true,
+          };
+        } catch (error) {
+          return {
+            ...link,
+            valid: false,
+          };
+        }
+      })
+    );
+
+    return linked.filter(function (link) {
+      if (shouldValidate) {
+        return link.valid;
+      }
+      return true;
+    });
   } catch (error) {
     errorHandler(error);
   } finally {
